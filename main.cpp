@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include <SFML/Graphics.hpp>
-//#include <SFML/Mouse.hpp>
 
 using namespace std;
 using namespace sf;
@@ -64,7 +63,14 @@ int main()
 
         /*
         ##############################
-        Update the Window Draw
+        Update the Scene
+        ##############################
+        */
+
+
+        /*
+        ##############################
+        Draw the Scene
         ##############################
         */
         rect.setPosition(clicked.x, clicked.y);
