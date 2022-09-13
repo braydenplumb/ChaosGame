@@ -3,6 +3,7 @@
 #include <vector>
 
 using namespace sf;
+using namespace std;
 
 int main()
 {
@@ -22,6 +23,8 @@ int main()
     instructionText.setColor(Color::Black);
     instructionText.setPosition(Vector2f(10, 10));
     bool showText = true;
+
+    vector<Vector2f> vertices;
 
     while (window.isOpen())
     {
