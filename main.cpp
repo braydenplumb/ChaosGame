@@ -1,13 +1,14 @@
-#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
+#include <string>
+#include <SFML/Graphics.hpp>
 
-using namespace sf;
 using namespace std;
+using namespace sf;
 
 int main()
 {
-    RenderWindow window(VideoMode(1280, 720), "Chaos Game");
+    RenderWindow window(VideoMode(1280, 720), "Chaos Game", Style::Default);
 
     Color darkGray(50, 50, 50, 150);
     RectangleShape rect;
@@ -33,9 +34,16 @@ int main()
     instructionText.setPosition(Vector2f(10, 44));
     bool showText = true;
 
+    // First three points stored in here
     vector<Vector2f> vertices;
+    // the rest of the points after the fourth input from user
+    vector<Vector2f> points;
+
+    Vector2f clicked;
+    Vector2f fourthClick;
 
     // Generate Random Points - for testing
+    /*
     srand(time(NULL));
     for (int i = 0; i < 400; i++)
     {
@@ -43,7 +51,9 @@ int main()
         int rand_y = rand() % 720;
         vertices.push_back(Vector2f(rand_x, rand_y));
     }
+    */
 
+    // Main while-loop which loops forever until the game is exited
     while (window.isOpen())
     {
         /*
@@ -56,14 +66,33 @@ int main()
         while (window.pollEvent(event))
         {
             if (event.type == Event::Closed)
-                window.close();
-            
-            if (event.type == Event::KeyPressed)
+                {
+                    window.close();
+                }
+            if (event.type == Event::MouseButtonPressed)
             {
-                if (event.key.code == Keyboard::Enter)
-                    showText = !showText;
+                if (event.mouseButton.button == sf::Mouse::Left)
+                {
+                    cout << "!left mouse button pressed!" << endl;
+                    cout << "mouse x: " << event.mouseButton.x << endl;
+                    cout << "mouse y: " << event.mouseButton.y << endl;
+
+                    clicked.x = event.mouseButton.x;
+                    clicked.y = event.mouseButton.y;
+
+                    vertices.push_back({clicked.x, clicked.y});
+                    
+                    
+
+                }
             }
         }
+        
+
+        if (Keyboard::isKeyPressed(Keyboard::Escape))
+		{
+			window.close();
+		}
 
         /*
         ##############################
@@ -78,6 +107,11 @@ int main()
         ##############################
         */
 
+        /*
+        ##############################
+        Draw the Window Draw
+        ##############################
+        */
         window.clear();
 
         // Draws the Points
@@ -97,6 +131,7 @@ int main()
         }
 
         window.display();
+
     }
 
     return 0;
