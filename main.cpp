@@ -8,12 +8,24 @@ int main()
 
     while (window.isOpen())
     {
+        /*
+        ##############################
+        Handle User Input
+        ##############################
+        */
+        
         Event event;
         while (window.pollEvent(event))
         {
             if (event.type == Event::Closed)
                 window.close();
         }
+
+        /*
+        ##############################
+        Update the Window Draw
+        ##############################
+        */
 
         window.clear();
         window.display();
