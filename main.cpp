@@ -6,20 +6,26 @@
 using namespace std;
 using namespace sf;
 
-// Generate Random Points - for testing
-void generateRandomPoints(vector<Vector2f> &vert_list)
+Vector2f pickRandomPoint()
 {
-    srand(time(NULL));
+    int rand_x = rand() % 1280;
+    int rand_y = rand() % 720;
+    return Vector2f(rand_x, rand_y);
+}
+
+// Generate Random Points - for testing
+void generateRandomPoints(vector<Vector2f> &points)
+{
     for (int i = 0; i < 400; i++)
     {
-        int rand_x = rand() % 1280;
-        int rand_y = rand() % 720;
-        vert_list.push_back(Vector2f(rand_x, rand_y));
+        points.push_back(pickRandomPoint());
     }
 }
 
 int main()
 {
+    srand(time(NULL));
+
     RenderWindow window(VideoMode(1280, 720), "Chaos Game", Style::Default);
 
     window.setMouseCursorVisible(false);
@@ -60,6 +66,9 @@ int main()
     // the rest of the points after the fourth input from user
     vector<Vector2f> points;
 
+    int maxVertices = 3;
+    bool gameActive = false;
+
     Vector2f clicked;
     Vector2f fourthClick;
 
@@ -83,7 +92,7 @@ int main()
                 }
             if (event.type == Event::MouseButtonPressed)
             {
-                if (event.mouseButton.button == sf::Mouse::Left)
+                if (event.mouseButton.button == sf::Mouse::Left && !gameActive)
                 {
                     cout << "!left mouse button pressed!" << endl;
                     cout << "mouse x: " << event.mouseButton.x << endl;
@@ -91,10 +100,17 @@ int main()
 
                     clicked.x = event.mouseButton.x;
                     clicked.y = event.mouseButton.y;
-
-                    vertices.push_back({clicked.x, clicked.y});
                     
-                    
+                    if (vertices.size() == maxVertices)
+                    {
+                        gameActive = true;
+                        showText = false;
+                        points.push_back({ clicked.x, clicked.y });
+                    }
+                    else
+                    {
+                        vertices.push_back({ clicked.x, clicked.y });
+                    }
 
                 }
             }
@@ -120,6 +136,14 @@ int main()
         // Update Cursor Graphic
         cursorSprite.setPosition(Mouse::getPosition(window).x, Mouse::getPosition(window).y);
 
+        // Chaos Point Placing
+        if (gameActive && points.size() < 2000)
+        {
+            cout << "New Point: " << points.at(points.size() - 1).x << ", " << points.at(points.size() - 1).y << endl;
+            Vector2f newPoint = pickRandomPoint(); // Where the midpoint finder function will go. Right now I just pick random points on the screen.
+            points.push_back(newPoint);
+        }
+
         /*
         ##############################
         Draw the Scene
@@ -129,13 +153,24 @@ int main()
         // Clear the Window
         window.clear();
 
-        // Draw the Points
+        // Draw the Vertices
         for (int i = 0; i < vertices.size(); i++)
         {
-            RectangleShape rectPoint;
-            rectPoint.setSize(Vector2f(2, 2));
-            rectPoint.setPosition(vertices.at(i));
-            window.draw(rectPoint);
+            CircleShape circlePoint;
+            circlePoint.setFillColor(Color::Green);
+            circlePoint.setRadius(3);
+            circlePoint.setOrigin(3, 3);
+            circlePoint.setPosition(vertices.at(i));
+            window.draw(circlePoint);
+        }
+
+        // Draw the Points
+        for (int i = 1; i < points.size(); i++)
+        {
+            CircleShape circlePoint;
+            circlePoint.setRadius(0.5);
+            circlePoint.setPosition(points.at(i));
+            window.draw(circlePoint);
         }
 
         // Draw Instruction Panel
