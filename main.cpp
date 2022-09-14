@@ -6,6 +6,18 @@
 using namespace std;
 using namespace sf;
 
+// Generate Random Points - for testing
+void generateRandomPoints(vector<Vector2f> &vert_list)
+{
+    srand(time(NULL));
+    for (int i = 0; i < 400; i++)
+    {
+        int rand_x = rand() % 1280;
+        int rand_y = rand() % 720;
+        vert_list.push_back(Vector2f(rand_x, rand_y));
+    }
+}
+
 int main()
 {
     RenderWindow window(VideoMode(1280, 720), "Chaos Game", Style::Default);
@@ -51,16 +63,7 @@ int main()
     Vector2f clicked;
     Vector2f fourthClick;
 
-    // Generate Random Points - for testing
-    /*
-    srand(time(NULL));
-    for (int i = 0; i < 400; i++)
-    {
-        int rand_x = rand() % 1280;
-        int rand_y = rand() % 720;
-        vertices.push_back(Vector2f(rand_x, rand_y));
-    }
-    */
+    //generateRandomPoints(vertices);
 
     // Main while-loop which loops forever until the game is exited
     while (window.isOpen())
@@ -114,6 +117,8 @@ int main()
         ##############################
         */
 
+        // Update Cursor Graphic
+        cursorSprite.setPosition(Mouse::getPosition(window).x, Mouse::getPosition(window).y);
 
         /*
         ##############################
@@ -121,16 +126,10 @@ int main()
         ##############################
         */
 
-        cursorSprite.setPosition(Mouse::getPosition(window).x, Mouse::getPosition(window).y);
-
-        /*
-        ##############################
-        Draw the Window Draw
-        ##############################
-        */
+        // Clear the Window
         window.clear();
 
-        // Draws the Points
+        // Draw the Points
         for (int i = 0; i < vertices.size(); i++)
         {
             RectangleShape rectPoint;
@@ -139,6 +138,7 @@ int main()
             window.draw(rectPoint);
         }
 
+        // Draw Instruction Panel
         if (showText)
         {
             window.draw(rect);
@@ -146,8 +146,10 @@ int main()
             window.draw(instructionText);
         }
 
+        // Draw the Cursor
         window.draw(cursorSprite);
 
+        // Display Draw Buffer
         window.display();
 
     }
