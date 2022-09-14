@@ -10,6 +10,8 @@ int main()
 {
     RenderWindow window(VideoMode(1280, 720), "Chaos Game", Style::Default);
 
+    window.setMouseCursorVisible(false);
+
     Color darkGray(50, 50, 50, 150);
     RectangleShape rect;
     rect.setSize(Vector2f(720, 150));
@@ -33,6 +35,13 @@ int main()
     instructionText.setColor(Color::White);
     instructionText.setPosition(Vector2f(10, 44));
     bool showText = true;
+
+    Texture cursorTexture;
+    cursorTexture.loadFromFile("graphics/arrow.png");
+
+    Sprite cursorSprite;
+    cursorSprite.setTexture(cursorTexture);
+    cursorSprite.setScale(3, 3);
 
     // First three points stored in here
     vector<Vector2f> vertices;
@@ -86,6 +95,11 @@ int main()
 
                 }
             }
+            if (event.type == Event::KeyPressed)
+            {
+                if (event.key.code == Keyboard::Enter)
+                    showText = !showText;
+            }
         }
         
 
@@ -107,6 +121,8 @@ int main()
         ##############################
         */
 
+        cursorSprite.setPosition(Mouse::getPosition(window).x, Mouse::getPosition(window).y);
+
         /*
         ##############################
         Draw the Window Draw
@@ -118,7 +134,7 @@ int main()
         for (int i = 0; i < vertices.size(); i++)
         {
             RectangleShape rectPoint;
-            rectPoint.setSize(Vector2f(1, 1));
+            rectPoint.setSize(Vector2f(2, 2));
             rectPoint.setPosition(vertices.at(i));
             window.draw(rectPoint);
         }
@@ -129,6 +145,8 @@ int main()
             window.draw(titleText);
             window.draw(instructionText);
         }
+
+        window.draw(cursorSprite);
 
         window.display();
 
