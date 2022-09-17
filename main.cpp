@@ -7,6 +7,8 @@
 using namespace std;
 using namespace sf;
 
+
+// Pick Random Point on screen - for testing; NO LONGER IN USE
 Vector2f pickRandomPoint()
 {
     int rand_x = rand() % 1280;
@@ -14,7 +16,7 @@ Vector2f pickRandomPoint()
     return Vector2f(rand_x, rand_y);
 }
 
-// Generate Random Points - for testing
+// Generate Random Points - for testing; NO LONGER IN USE
 void generateRandomPoints(vector<Vector2f> &points)
 {
     for (int i = 0; i < 400; i++)
@@ -40,6 +42,7 @@ Vector2f nextMidPoint(vector<Vector2f> &points, vector<Vector2f> &vertices, int 
     return newPoint;
 }
 
+
 int main()
 {
     srand(time(NULL));
@@ -47,8 +50,10 @@ int main()
     // Open a 1280 x 720 window for the game
     RenderWindow window(VideoMode(1280, 720), "Chaos Game", Style::Default);
 
+    // 
     window.setMouseCursorVisible(false);
 
+    // Textbox for program greeting and game instruction text
     Color darkGray(50, 50, 50, 150);
     RectangleShape rect;
     rect.setSize(Vector2f(720, 150));
@@ -59,7 +64,7 @@ int main()
     Font mainFont;
     mainFont.loadFromFile("fonts/VT323-Regular.ttf");
 
-    // Program greeting text box
+    // Program greeting text
     Text titleText;
     titleText.setFont(mainFont);
     titleText.setString("Welcome to the Chaos Game!");
@@ -67,7 +72,7 @@ int main()
     titleText.setColor(Color::White);
     titleText.setPosition(Vector2f(200, 10));
 
-    // Instruction text box for the game
+    // Game instruction text
     Text instructionText;
     instructionText.setFont(mainFont);
     instructionText.setString("Step 1: Click on any three points on the screen to create the vertices for the triangle\nStep 2: Click on a fourth point to start the algorithm\nStep 3: Chaos Ensues!\nPress Enter to Close Instructions");
@@ -92,8 +97,10 @@ int main()
     int maxVertices = 3;
     bool gameActive = false;
 
+    // Coordinate points from user's mouse click
     Vector2f clicked;
 
+    // For testing use
     //generateRandomPoints(vertices);
 
     // Main while-loop which loops forever until the game is exited
@@ -133,7 +140,6 @@ int main()
                     {
                         vertices.push_back({ clicked.x, clicked.y });
                     }
-
                 }
             }
             if (event.type == Event::KeyPressed)
@@ -172,7 +178,7 @@ int main()
             cout << "vertices.y: " << vertices[randomVertex].y << endl;
             */
             cout << "New Point: " << points.at(points.size() - 1).x << ", " << points.at(points.size() - 1).y << endl;
-            Vector2f newPoint = nextMidPoint(points, vertices, randomVertex); // Where the midpoint finder function will go. Right now I just pick random points on the screen.
+            Vector2f newPoint = nextMidPoint(points, vertices, randomVertex);
             points.push_back(newPoint);
         }
 
@@ -196,11 +202,27 @@ int main()
             window.draw(circlePoint);
         }
 
+        // Draw a line between vertices
+        Vertex lineBtwnVertex[] =
+        {
+            Vertex(Vector2f(vertices.at(0).x, vertices.at(0).y)),
+            Vertex(Vector2f(vertices.at(1).x, vertices.at(1).x))
+        };
+        window.draw(lineBtwnVertex, 2, Lines);
+        
+        /*// Distance between 2 vertices
+        int distance = vertices.at(i)
+        RectangleShape lines;
+        lines.setFillColor(Color::Green);
+        lines.setSize(Vector2f(vertices.at(0), 3));
+        lines.setPosition(vertices.at(i)*/
+        
+
         // Draw the Points
         for (int i = 1; i < points.size(); i++)
         {
             CircleShape circlePoint;
-            circlePoint.setRadius(1);
+            circlePoint.setRadius(1.5);
             circlePoint.setPosition(points.at(i));
             window.draw(circlePoint);
         }
