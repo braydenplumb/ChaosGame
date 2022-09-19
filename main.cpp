@@ -224,6 +224,10 @@ int main()
             circlePoint.setRadius(1.5);
             circlePoint.setPosition(points.at(i));
             window.draw(circlePoint);
+            window.draw(circlePoint);
+            window.draw(circlePoint);
+            window.draw(circlePoint);
+            window.draw(circlePoint);
         }
 
         // Draw Instruction Panel
