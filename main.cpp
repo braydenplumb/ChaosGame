@@ -69,7 +69,7 @@ int main()
     titleText.setFont(mainFont);
     titleText.setString("Welcome to the Chaos Game!");
     titleText.setCharacterSize(30);
-    titleText.setColor(Color::White);
+    titleText.setFillColor(Color::White);
     titleText.setPosition(Vector2f(200, 10));
 
     // Game instruction text
@@ -77,7 +77,7 @@ int main()
     instructionText.setFont(mainFont);
     instructionText.setString("Step 1: Click on any three points on the screen to create the vertices for the triangle\nStep 2: Click on a fourth point to start the algorithm\nStep 3: Chaos Ensues!\nPress Enter to Close Instructions");
     instructionText.setCharacterSize(20);
-    instructionText.setColor(Color::White);
+    instructionText.setFillColor(Color::White);
     instructionText.setPosition(Vector2f(10, 44));
     bool showText = true;
 
@@ -113,6 +113,7 @@ int main()
         */
         
         Event event;
+        Vertex line[2];
         while (window.pollEvent(event))
         {
             if (event.type == Event::Closed)
@@ -135,6 +136,8 @@ int main()
                         gameActive = true;
                         showText = false;
                         points.push_back({ clicked.x, clicked.y });
+                        line[0].position = Vector2f(vertices.at(0).x, vertices.at(0).y);
+                        line[1].position = Vector2f(vertices.at(1).x, vertices.at(1).y);
                     }
                     else
                     {
@@ -203,12 +206,8 @@ int main()
         }
 
         // Draw a line between vertices
-        Vertex lineBtwnVertex[] =
-        {
-            Vertex(Vector2f(vertices.at(0).x, vertices.at(0).y)),
-            Vertex(Vector2f(vertices.at(1).x, vertices.at(1).x))
-        };
-        window.draw(lineBtwnVertex, 2, Lines);
+        window.draw(line, 2, Lines);
+        
         
         /*// Distance between 2 vertices
         int distance = vertices.at(i)
