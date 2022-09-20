@@ -7,6 +7,7 @@
 using namespace std;
 using namespace sf;
 
+
 // finds the next midpoint between one of the vertex and a point
 Vector2f nextMidPoint(vector<Vector2f> &points, vector<Vector2f> &vertices, int vertexRand)
 {
