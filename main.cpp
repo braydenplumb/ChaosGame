@@ -8,23 +8,6 @@ using namespace std;
 using namespace sf;
 
 
-// Pick Random Point on screen - for testing; NO LONGER IN USE
-Vector2f pickRandomPoint()
-{
-    int rand_x = rand() % 1280;
-    int rand_y = rand() % 720;
-    return Vector2f(rand_x, rand_y);
-}
-
-// Generate Random Points - for testing; NO LONGER IN USE
-void generateRandomPoints(vector<Vector2f> &points)
-{
-    for (int i = 0; i < 400; i++)
-    {
-        points.push_back(pickRandomPoint());
-    }
-}
-
 // finds the next midpoint between one of the vertex and a point
 Vector2f nextMidPoint(vector<Vector2f> &points, vector<Vector2f> &vertices, int vertexRand)
 {
@@ -45,8 +28,6 @@ Vector2f nextMidPoint(vector<Vector2f> &points, vector<Vector2f> &vertices, int 
 
 int main()
 {
-    srand(time(NULL));
-
     // Open a 1280 x 720 window for the game
     RenderWindow window(VideoMode(1280, 720), "Chaos Game", Style::Default);
 
