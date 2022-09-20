@@ -7,50 +7,32 @@
 using namespace std;
 using namespace sf;
 
-
-// Pick Random Point on screen - for testing; NO LONGER IN USE
-Vector2f pickRandomPoint()
-{
-    int rand_x = rand() % 1280;
-    int rand_y = rand() % 720;
-    return Vector2f(rand_x, rand_y);
-}
-
-// Generate Random Points - for testing; NO LONGER IN USE
-void generateRandomPoints(vector<Vector2f> &points)
-{
-    for (int i = 0; i < 400; i++)
-    {
-        points.push_back(pickRandomPoint());
-    }
-}
-
 // finds the next midpoint between one of the vertex and a point
 Vector2f nextMidPoint(vector<Vector2f> &points, vector<Vector2f> &vertices, int vertexRand)
 {
     Vector2f newPoint;
-    
+
     int newX = (points.at(points.size() - 1).x + vertices.at(vertexRand).x) / 2;
     int newY = (points.at(points.size() - 1).y + vertices.at(vertexRand).y) / 2;
+
     /*debugging
     cout << "midpoint_x: " << newX << endl;
     cout << "midpoint_y: " << newY << endl << endl;
     */
+
     newPoint.x = newX;
     newPoint.y = newY;
-    
+
     return newPoint;
 }
 
 
 int main()
 {
-    srand(time(NULL));
-
     // Open a 1280 x 720 window for the game
     RenderWindow window(VideoMode(1280, 720), "Chaos Game", Style::Default);
 
-    // 
+    //
     window.setMouseCursorVisible(false);
 
     // Textbox for program greeting and game instruction text
@@ -94,14 +76,11 @@ int main()
     // the rest of the points after the fourth input from user
     vector<Vector2f> points;
 
-    int maxVertices = 3;
+    const int maxVertices = 3;
     bool gameActive = false;
 
     // Coordinate points from user's mouse click
     Vector2f clicked;
-
-    // For testing use
-    //generateRandomPoints(vertices);
 
     // Main while-loop which loops forever until the game is exited
     while (window.isOpen())
@@ -111,7 +90,7 @@ int main()
         Handle User Input
         ##############################
         */
-        
+
         Event event;
         Vertex line[2];
         while (window.pollEvent(event))
@@ -130,7 +109,7 @@ int main()
 
                     clicked.x = event.mouseButton.x;
                     clicked.y = event.mouseButton.y;
-                    
+
                     if (vertices.size() == maxVertices)
                     {
                         gameActive = true;
@@ -151,12 +130,12 @@ int main()
                     showText = !showText;
             }
         }
-        
+
 
         if (Keyboard::isKeyPressed(Keyboard::Escape))
-		{
-			window.close();
-		}
+    		{
+    		    window.close();
+    		}
 
         /*
         ##############################
@@ -205,17 +184,14 @@ int main()
             window.draw(circlePoint);
         }
 
-        // Draw a line between vertices
-        window.draw(line, 2, Lines);
-        
-        
+
         /*// Distance between 2 vertices
         int distance = vertices.at(i)
         RectangleShape lines;
         lines.setFillColor(Color::Green);
         lines.setSize(Vector2f(vertices.at(0), 3));
         lines.setPosition(vertices.at(i)*/
-        
+
 
         // Draw the Points
         for (int i = 1; i < points.size(); i++)
@@ -229,6 +205,9 @@ int main()
             window.draw(circlePoint);
             window.draw(circlePoint);
         }
+
+        // Draw a line between vertices
+        window.draw(line, 2, Lines);
 
         // Draw Instruction Panel
         if (showText)
